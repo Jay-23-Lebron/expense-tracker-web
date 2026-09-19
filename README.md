@@ -11,6 +11,11 @@ A full-stack personal income & expense management web application, built as a po
   - Submit button with native browser validation
 - Built transaction list table with standard HTML table tags
 - All elements and attributes follow standard English naming conventions
+- Built static login page with standard form structure:
+  - Username text input with semantic label binding
+  - Password input with hidden character display
+  - Native form submit button
+  - Page navigation to transaction form after submission
 
 ## Tech Stack
 ### Frontend
@@ -27,11 +32,14 @@ expense-tracker-web/
 ├── templates/
 │   └── expense-form.html   # Static transaction creation page
 └── README.md
+└── login.html          # Static login page
+
 
 
 ## How to Run Locally
 1. Clone the repository to your local machine
-2. Open `templates/expense-form.html` directly in any web browser
+2. Open `templates/login.html` or `templates/expense-form.html` directly in any web browser
+
 
 ## Future Roadmap
 - Backend integration with Flask to handle form submission and dynamic data rendering
