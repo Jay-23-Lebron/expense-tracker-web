@@ -41,3 +41,35 @@ select{
     width: 100%;
     box-sizing: border-box;
 }
+
+.form-group{
+    margin-bottom: 20px;
+}
+
+.form-group label{
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.transaction-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+}
+
+.transaction-table th,
+.transaction-table td{
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.transaction-table th{
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+.transaction-table tr:nth-child(even){
+    background-color: #fafafa;
+}
