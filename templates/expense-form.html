@@ -77,5 +77,16 @@
         </tr>
     </table>
 </div>
+
+<script>
+    const amountInput = document.querySelector('#amount');
+    const submitButton = document.querySelector('button[type="submit"]');
+    submitButton.addEventListener('click',function(event){
+        event.preventDefault();
+        let inputValue = amountInput.value;
+        console.log('User entered amount:',inputValue);
+    });
+</script>
+
 </body>
 </html>
