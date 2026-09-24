@@ -12,7 +12,7 @@
 <div class="form-container">
     <h1>Add New Transaction</h1>
 
-    <form action="record-table.html" method="get">
+    <form id="transactionForm" action="record-table.html" method="get" novalidate>
         <!-- Transaction Type -->
         <div class="form-group">
             <label for="type">Transaction Type</label>
@@ -80,8 +80,8 @@
 
 <script>
     const amountInput = document.querySelector('#amount');
-    const submitButton = document.querySelector('button[type="submit"]');
-    submitButton.addEventListener('click',function(event){
+    const transactionForm = document.querySelector('#transactionForm');
+    transactionForm.addEventListener('submit',function(event){
         event.preventDefault();
         let inputValue = amountInput.value;
 
