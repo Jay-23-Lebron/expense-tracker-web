@@ -84,7 +84,19 @@
     submitButton.addEventListener('click',function(event){
         event.preventDefault();
         let inputValue = amountInput.value;
-        console.log('User entered amount:',inputValue);
+
+        if (inputValue === ''){
+            alert('Amount cannot be empty');
+            return;
+        }
+
+        const amount = Number(inputValue);
+
+        if (amount<0){
+            alert('Amount cannot be negative');
+            return;
+        }
+        console.log('Validation passed, amount:', amount);
     });
 </script>
 
