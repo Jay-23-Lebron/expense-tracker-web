@@ -83,7 +83,7 @@
     const transactionForm = document.querySelector('#transactionForm');
     transactionForm.addEventListener('submit',function(event){
         event.preventDefault();
-        let inputValue = amountInput.value;
+        let inputValue = amountInput.value.trim();
 
         if (inputValue === ''){
             alert('Amount cannot be empty');
@@ -91,9 +91,13 @@
         }
 
         const amount = Number(inputValue);
+        if(isNaN(amount)){
+            alert('Please enter a valid number');
+            return;
+        }
 
-        if (amount<0){
-            alert('Amount cannot be negative');
+        if (amount<=0){
+            alert('Amount must be greater than 0');
             return;
         }
         console.log('Validation passed, amount:', amount);

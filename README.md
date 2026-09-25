@@ -5,10 +5,15 @@ A full-stack personal income & expense management web application, built as a po
 ✅ **Phase 1 - Static HTML Foundation (Completed)**
 - Built static transaction creation form with core fields:
   - Transaction type dropdown (Income / Expense)
-  - Number input for amount (2 decimal places, non-negative validation)
+  - Number input for amount with robust validation logic
   - Native date picker
   - Optional note text input
-  - Submit button with native browser validation
+- Custom client-side JavaScript validation (replaces native browser validation)
+  - Rejects empty input and whitespace-only values
+  - Blocks non-numeric text and invalid number formats
+  - Ensures transaction amount is strictly greater than 0
+  - Auto-trims leading and trailing whitespace before validation
+  - Triggers on both submit button click and Enter key press
 - Built transaction list table with standard HTML table tags
 - All elements and attributes follow standard English naming conventions
 - Built static login page with standard form structure:
