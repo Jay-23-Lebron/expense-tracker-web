@@ -46,6 +46,17 @@
         </div>
     </form>
 </div>
+<!-- Category filter dropdown -->
+<div class="filter-section">
+    <label for="category-select">Filter by category:</label>
+    <select id="category-select">
+        <option value="all">All</option>
+        <option value="food">Dining</option>
+        <option value="transport">Transport</option>
+        <option value="rent">Rent</option>
+        <option value="income">Income</option>
+    </select>
+</div>
 
     <h2>Transaction List</h2>
 
@@ -101,6 +112,12 @@
             return;
         }
         console.log('Validation passed, amount:', amount);
+    });
+
+    const categorySelect = document.querySelector('#category-select');
+    categorySelect.addEventListener('change', function(e){
+        const selectedCategory = e.target.value;
+        console.log('Selected category:', selectedCategory);
     });
 </script>
 
