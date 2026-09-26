@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Array Filter Demo</title>
+</head>
+<body>
+    <script>
+        const transactions = [
+            { type: 'income', amount: 5000, date: '2026-09-01', note: 'salary' },
+            { type: 'expense', amount: 200, date: '2026-09-02', note: 'dinner' },
+            { type: 'expense', amount: 50, date: '2026-09-03', note: 'bus' },
+            { type: 'income', amount: 800, date: '2026-09-04', note: 'bonus' },
+            { type: 'expense', amount: 120, date: '2026-09-05', note: 'shopping' }
+        ];
+
+        console.log('Original array:',transactions);
+
+        const expenseList = transactions.filter(function(item){
+            return item.type === 'expense';
+        });
+
+        console.log('Filtered expense list:', expenseList);
+        console.log('Original array after filter:', transactions);
+
+        const largeAmountList = transactions.filter(function(item){
+            return item.amount > 100;
+        });
+
+        console.log('Records with amount > 100:', largeAmountList);
+        console.log('Original array still unchanged:', transactions);
+
+        transactions.forEach(function(item){
+            console.log('Transaction:',item.note, '-$' + item.amount);
+        });
+    </script>
+</body>
+</html>
