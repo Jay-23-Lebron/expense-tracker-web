@@ -61,13 +61,16 @@
     <h2>Transaction List</h2>
 
     <!-- Transaction Records Table -->
-    <table class="transaction-table">
+    <table id="transaction-table" class="transaction-table">
+      <thead>
         <tr>
             <th>Type</th>
             <th>Amount</th>
             <th>Date</th>
             <th>Note</th>
         </tr>
+      </thead>
+      <tbody>
         <tr>
             <td>Income</td>
             <td>5000.00</td>
@@ -86,10 +89,52 @@
             <td>2026-09-10</td>
             <td>Groceries</td>
         </tr>
+      </tbody>
     </table>
 </div>
 
+
+
 <script>
+    const transactions = [
+        {
+            type: 'Income',
+            amount: 5000.00,
+            date: '2026-09-01',
+            note: 'salary',
+            category: 'income'
+        },
+        {
+            type: 'Expense',
+            amount: 35.50,
+            date: '2026-09-05',
+            note: 'Lunch',
+            category: 'food'
+        },
+        {
+            type: 'Expense',
+            amount: 120.00,
+            date: '2026-09-10',
+            note: 'Groceries',
+            category: 'food'
+        }
+    ];
+    
+    function renderTransactions(data){
+        const tbody = document.querySelector('#transaction-table tbody');
+        tbody.innerHTML = '';
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.type}</td>
+                <td>${item.amount}</td>
+                <td>${item.date}</td>
+                <td>${item.note}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
     const amountInput = document.querySelector('#amount');
     const transactionForm = document.querySelector('#transactionForm');
     transactionForm.addEventListener('submit',function(event){
@@ -119,6 +164,8 @@
         const selectedCategory = e.target.value;
         console.log('Selected category:', selectedCategory);
     });
+
+    renderTransactions(transactions);
 </script>
 
 </body>
