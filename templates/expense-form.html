@@ -162,10 +162,14 @@
     const categorySelect = document.querySelector('#category-select');
     categorySelect.addEventListener('change', function(e){
         const selectedCategory = e.target.value;
-        console.log('Selected category:', selectedCategory);
+        const filteredData = selectedCategory === 'All'
+            ? transactions
+            : transactions.filter(item => item.category === selectedCategory)
+    
+        renderTransactions(filteredData);
     });
 
-    renderTransactions(transactions);
+    
 </script>
 
 </body>

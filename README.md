@@ -16,6 +16,7 @@ A full-stack personal income & expense management web application, built as a po
   - Triggers on both submit button click and Enter key press
 - Built transaction list table with standard HTML table tags
 - All elements and attributes follow standard English naming conventions
+- Implemented client-side category filter for all transaction records, allowing users to filter entries by transaction category.
 - Built static login page with standard form structure:
   - Username text input with semantic label binding
   - Password input with hidden character display
@@ -50,4 +51,4 @@ expense-tracker-web/
 - Backend integration with Flask to handle form submission and dynamic data rendering
 - UI styling and responsive design with CSS
 - Database integration to support full CRUD operations for transactions
-- Feature expansion: statistics, filters and reporting functions
+- Feature expansion: statistics, advanced filters and reporting functions
