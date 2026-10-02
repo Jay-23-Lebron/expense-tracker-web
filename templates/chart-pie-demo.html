@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pie Chart Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="myPieChart" width="400" height="400"></canvas>
+    <script>
+        const ctx = document.getElementById('myPieChart').getContext('2d');
+        const data = {
+            labels: ['Dining', 'Transport', 'Rent', 'Income'],
+            datasets: [{
+                data: [800, 300, 2000, 5000],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+            }]
+        };
+        new Chart(ctx, {
+            type: 'pie',
+            data: data
+        });
+    </script>
+</body>    
+</html>
