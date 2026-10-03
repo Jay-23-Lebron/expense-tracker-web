@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header class="dashboard-header">
@@ -23,5 +24,66 @@
             <p class="stat-value" id="balance">$0.00</p>
         </div>
     </section>
+
+    <section class="chart-section">
+        <h2>Expense by Category</h2>
+        <div class="chart-container" >
+            <canvas id="categoryPieChart"></canvas>
+        </div>
+    </section>
+
+    <script>
+        const canvas = document.getElementById('categoryPieChart');
+        const ctx = canvas.getContext('2d');
+
+        const categoryLabels = ['Food', 'Transport', 'Entertainment', 'Housing'];
+        const categoryAmounts = [2000, 300, 500, 2000];
+        const categoryColors = [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#4BC0C0'
+        ];
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryAmounts,
+                    backgroundColor: categoryColors,
+                    borderWidth: 1,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                layout: {
+                    padding: 20
+                },
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ':$' + context.raw;
+                            }
+                        }
+                    }
+                }
+                }
+            }
+        );
+    </script>
 </body>
 </html>
