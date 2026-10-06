@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
-    <form action="expense-form.html" method="get">
+    <form id="loginForm" action="expense-form.html" method="get">
         <!-- Username Input -->
         <label for="username">Username</label>
         <input type="text" id="username" name="username">
@@ -19,5 +19,23 @@
         <!-- Login Button -->
         <input type="submit" value="Login">
     </form>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', function(e){
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!username || !password) {
+                alert('Please enter username and password');
+                return;
+            }
+
+            this.submit();
+        });
+    </script>
 </body>
 </html>
