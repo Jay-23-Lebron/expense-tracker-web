@@ -28,6 +28,17 @@
             </select>
         </div>
 
+        <!-- Transaction Category -->
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+                <option value="Salary">Salary</option>
+                <option value="Bonus">Bonus</option>
+                <option value="Investment">Investment</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
         <!-- Transaction Amount -->
         <div class="form-group">
             <label for="amount">Amount</label>
@@ -102,6 +113,30 @@
 
 
 <script>
+    const expenseCategories = ['Food', 'Transportation', 'Housing', 'Entertainment', 'Other'];
+    const incomeCategories = ['Salary', 'Bonus', 'Investment', 'Other'];
+
+    const typeSelect = document.querySelector('#type');
+    const formCategorySelect = document.querySelector('#category');
+
+    typeSelect.addEventListener('change', function() {
+        const selectedType = this.value;
+        let categories;
+        if (selectedType === 'income') {
+            categories = incomeCategories;
+        } else {
+            categories = expenseCategories;
+        }
+
+        formCategorySelect.innerHTML = '';
+        categories.forEach(function(category) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            formCategorySelect.appendChild(option);
+        });
+    });
+
     const transactions = [
         {
             type: 'Income',
