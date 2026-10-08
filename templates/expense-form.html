@@ -152,6 +152,13 @@
         const tbody = document.querySelector('#transaction-table tbody');
         tbody.innerHTML = '';
 
+        if (data.length === 0) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = '<td colspan="5" style="text-align:center; color:#999;">No transactions records</td>';
+            tbody.appendChild(emptyRow);
+            return;
+        }
+
         data.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
