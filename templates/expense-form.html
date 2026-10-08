@@ -151,6 +151,7 @@
     function renderTransactions(data){
         const tbody = document.querySelector('#transaction-table tbody');
         tbody.innerHTML = '';
+
         data.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -189,16 +190,19 @@
     });
 
     const categorySelect = document.querySelector('#category-select');
-    categorySelect.addEventListener('change', function(e){
-        const selectedCategory = e.target.value;
+    function filterAndRender() {
+        const selectedCategory = categorySelect.value;
         const filteredData = selectedCategory === 'all'
             ? transactions
-            : transactions.filter(item => item.category === selectedCategory)
-    
-        renderTransactions(filteredData);
-    });
+            : transactions.filter(item => item.category === selectedCategory);
 
+        renderTransactions(filteredData);
+    }
+
+    categorySelect.addEventListener('change', filterAndRender);
     
+    filterAndRender();
+
 </script>
 
 </body>
