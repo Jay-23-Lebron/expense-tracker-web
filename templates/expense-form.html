@@ -18,7 +18,7 @@
 <div class="form-container">
     <h1>Add New Transaction</h1>
 
-    <form id="transactionForm" action="record-table.html" method="post" novalidate>
+    <form id="transactionForm" action="/add-record" method="post" novalidate>
         <!-- Transaction Type -->
         <div class="form-group">
             <label for="type">Transaction Type</label>
@@ -175,21 +175,23 @@
     const amountInput = document.querySelector('#amount');
     const transactionForm = document.querySelector('#transactionForm');
     transactionForm.addEventListener('submit',function(event){
-        event.preventDefault();
         let inputValue = amountInput.value.trim();
 
         if (inputValue === ''){
+            event.preventDefault();
             alert('Amount cannot be empty');
             return;
         }
 
         const amount = Number(inputValue);
         if(isNaN(amount)){
+            event.preventDefault();
             alert('Please enter a valid number');
             return;
         }
 
         if (amount<=0){
+            event.preventDefault();
             alert('Amount must be greater than 0');
             return;
         }
