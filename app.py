@@ -13,6 +13,10 @@ def home():
 def about():
     return "This is the /about page"
 
+@app.route('/add-record')
+def add_record_page():
+    return render_template('expense-form.html')
+
 @app.route('/user/<username>')
 def user_profile(username):
     return render_template('user-profile-demo.html', username=username)
