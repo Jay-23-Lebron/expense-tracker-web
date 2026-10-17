@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import sqlite3
 app = Flask(__name__)
 
 @app.route('/')
@@ -36,15 +37,27 @@ def add_record_submit():
     if amount_num <= 0:
         return 'Error: Amount must be greater than 0'
 
-    print('--- Received Form Data ---')
-    print(f'Type: {record_type}')
-    print(f'Amount: {amount}')
-    print(f'Category: {category}')
-    print(f'Date: {record_date}')
-    print(f'Note: {note}')
-    print('--------------------------')
+    try:
+        conn = sqlite3.connect('expense.db')
+        cursor = conn.cursor()
 
-    return 'Form submitted successfully'
+        insert_sql = """
+            INSERT INTO expense (type, amount, category, date, note)
+            VALUES (?, ?, ?, ?, ?)
+        """
+        cursor.execute(insert_sql, (record_type, amount_num, category, record_date, note))
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        return f'Error: Failed to save record. {str(e)}'
+
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+    return 'Save successful! Transaction record added.'
 
 @app.route('/user/<username>')
 def user_profile(username):

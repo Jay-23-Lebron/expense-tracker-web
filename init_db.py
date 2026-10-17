@@ -8,21 +8,18 @@ CREATE TABLE IF NOT EXISTS expense (
     type TEXT NOT NULL,
     amount REAL NOT NULL,
     category TEXT NOT NULL,
+    date TEXT NOT NULL,
     note TEXT,
-    created_at TEXT NOT NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 """
-
 cursor.execute(create_table_sql)
-insert_sql = """
-INSERT INTO expense (type, amount, category, note, created_at)
-VALUES ('expense', 35.5, 'food', 'lunch', '2026-10-13 12:30:00')
-"""
-cursor.execute(insert_sql)
 
-cursor.execute("SELECT * FROM expense")
-result = cursor.fetchall()
-print("Records in database:", result)
+insert_sample_sql = """
+INSERT INTO expense (type, amount, category, date, note)
+VALUES ('expense', 35.5, 'food', '2026-10-16', 'lunch')
+"""
+cursor.execute(insert_sample_sql)
 
 conn.commit()
 conn.close()
