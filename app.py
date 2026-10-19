@@ -4,7 +4,16 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('dashboard.html')
+    conn = sqlite3.connect('expense.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT id, type, amount, category, note, created_at FROM expense')
+    records = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('dashboard.html', records = records)
 
 @app.route('/home')
 def home():
