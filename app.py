@@ -59,6 +59,22 @@ def add_record_submit():
 
     return 'Save successful! Transaction record added.'
 
+@app.route('/records')
+def get_all_records():
+    conn = sqlite3.connect('expense.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT id, type, amount, category, note, created_at FROM expense')
+
+    records = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    print(records)
+
+    return str(records)
+
 @app.route('/user/<username>')
 def user_profile(username):
     return render_template('user-profile-demo.html', username=username)
