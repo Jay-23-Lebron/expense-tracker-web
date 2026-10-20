@@ -17,7 +17,28 @@
         <h1>Financial Dashboard</h1>
     </header>
 
-    {{records}}
+    <table class="record-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Note</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record[0] }}</td>
+                <td>{{ record[1] }}</td>
+                <td>{{ record[2] }}</td>
+                <td>{{ record[3] }}</td>
+                <td>{{ record[4] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <section class="'stats-overview">
         <div class="stat-card">
