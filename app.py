@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import sqlite3
 app = Flask(__name__)
 
@@ -66,7 +66,7 @@ def add_record_submit():
             cursor.close()
             conn.close()
 
-    return 'Save successful! Transaction record added.'
+    return redirect('/')
 
 @app.route('/records')
 def get_all_records():
@@ -87,6 +87,7 @@ def get_all_records():
 @app.route('/user/<username>')
 def user_profile(username):
     return render_template('user-profile-demo.html', username=username)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

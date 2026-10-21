@@ -128,3 +128,9 @@ nav a:hover {
     background-color: #f5f5f5;
     font-weight: 600;
 }
+
+.empty-tip {
+    color: #999;
+    padding: 24px 0;
+    text-align: center;
+}

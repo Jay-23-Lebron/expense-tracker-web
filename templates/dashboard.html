@@ -17,6 +17,7 @@
         <h1>Financial Dashboard</h1>
     </header>
 
+    {% if records %}
     <table class="record-table">
         <thead>
             <tr>
@@ -39,6 +40,10 @@
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <p class="empty-tip">No records yet. Add your first transaction to get started.</p>
+    {% endif %}
+
 
     <section class="'stats-overview">
         <div class="stat-card">
