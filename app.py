@@ -15,14 +15,6 @@ def index():
 
     return render_template('dashboard.html', records = records)
 
-@app.route('/home')
-def home():
-    return "This is the /home page"
-
-@app.route('/about')
-def about():
-    return "This is the /about page"
-
 @app.route('/add-record')
 def add_record_page():
     return render_template('expense-form.html')
@@ -68,26 +60,34 @@ def add_record_submit():
 
     return redirect('/')
 
-@app.route('/records')
-def get_all_records():
+@app.route('/filter')
+def filter_records():
+    category = request.args.get('category')
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+
     conn = sqlite3.connect('expense.db')
     cursor = conn.cursor()
 
-    cursor.execute('SELECT id, type, amount, category, note, created_at FROM expense')
+    sql = "SELECT id, type, amount, category, note, date FROM expense WHERE 1=1 "
+    params = []
 
+    if category and category.strip():
+        sql += " AND category = ?"
+        params.append(category)
+
+    if start_date and end_date:
+        sql += " AND date BETWEEN ? AND ?"
+        params.append(start_date)
+        params.append(end_date)
+
+    cursor.execute(sql, params)
     records = cursor.fetchall()
-
+    
     cursor.close()
     conn.close()
 
-    print(records)
-
     return str(records)
-
-@app.route('/user/<username>')
-def user_profile(username):
-    return render_template('user-profile-demo.html', username=username)
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
