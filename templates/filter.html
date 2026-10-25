@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter Records</title>
+</head>
+<body>
+    <h1>Expense Filter</h1>
+
+    <form method="GET" action="/filter">
+        <div>
+            <label>Category:</label>
+            <select name="category">
+                <option value="" {% if not selected_category or selected_category == '' %}selected{% endif %}>All Categories</option>
+                <option value="Food" {% if selected_category == 'Food' %}selected{% endif %}>Food</option>
+                <option value="Transport" {% if selected_category == 'Transport' %}selected{% endif %}>Transport</option>
+                <option value="Entertainment" {% if selected_category == 'Entertainment' %}selected{% endif %}>Entertainment</option>
+                <option value="Shopping" {% if selected_category == 'Shopping' %}selected{% endif %}>Shopping</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Start Date:</label>
+            <input type="date" name="start_date" value="{{ start_date if start_date else '' }}">
+        </div>
+
+        <div>
+            <label>End Date:</label>
+            <input type="date" name="end_date" value="{{ end_date if end_date else '' }}">
+        </div>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <hr>
+    {% if records %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Note</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record[1] }}</td>
+                <td>{{ record[2] }}</td>
+                <td>{{ record[3] }}</td>
+                <td>{{ record[4] }}</td>
+                <td>{{ record[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No records found.</p>
+    {% endif %}
+
+    <p><a href="/">Back to Dashboard</a></p>
+</body>
+</html>

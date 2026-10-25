@@ -87,7 +87,11 @@ def filter_records():
     cursor.close()
     conn.close()
 
-    return str(records)
+    return render_template('filter.html', 
+                           records=records,
+                           selected_category=category,
+                           start_date=start_date,
+                           end_date=end_date)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
