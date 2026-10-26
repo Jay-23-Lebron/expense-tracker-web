@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+from datetime import datetime
 app = Flask(__name__)
 
 @app.route('/')
@@ -66,6 +67,18 @@ def filter_records():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
 
+    if start_date:
+        try:
+            datetime.strptime(start_date, "%Y-%m-%d")
+        except ValueError:
+            start_date = ""
+
+    if end_date:
+        try:
+            datetime.strptime(end_date, "%Y-%m-%d")
+        except ValueError:
+            end_date = ""
+
     conn = sqlite3.connect('expense.db')
     cursor = conn.cursor()
 
@@ -75,6 +88,15 @@ def filter_records():
     if category and category.strip():
         sql += " AND category = ?"
         params.append(category)
+
+
+    if start_date and not end_date:
+        sql += " AND date >= ?"
+        params.append(start_date)
+    
+    if end_date and not start_date:
+        sql += " AND date <= ?"
+        params.append(end_date)
 
     if start_date and end_date:
         sql += " AND date BETWEEN ? AND ?"
