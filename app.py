@@ -115,6 +115,30 @@ def filter_records():
                            start_date=start_date,
                            end_date=end_date)
 
+
+@app.route('/stats')
+def test_stats():
+    conn = sqlite3.connect('expense.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT SUM(amount) FROM expense WHERE type = 'income'")
+    total_income = cursor.fetchone()[0]
+
+    if total_income is None:
+        total_income = 0
+
+    cursor.execute("SELECT SUM(amount) FROM expense WHERE type = 'expense'")
+    total_expense = cursor.fetchone()[0]
+
+    if total_expense is None:
+        total_expense = 0
+
+    balance = total_income - total_expense
+
+    conn.close()
+
+    return f"Total Income: {total_income}<br>Total Expense: {total_expense}<br>Balance: {balance}"
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
 
