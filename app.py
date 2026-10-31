@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 from datetime import datetime
+from stats_service import calculate_financial_stats
 app = Flask(__name__)
 
 @app.route('/')
@@ -118,26 +119,9 @@ def filter_records():
 
 @app.route('/stats')
 def test_stats():
-    conn = sqlite3.connect('expense.db')
-    cursor = conn.cursor()
+    stats = calculate_financial_stats()
+    return f"Total Income: {stats['total_income']}<br>Total Expense: {stats['total_expense']}<br>Balance: {stats['balance']}"
 
-    cursor.execute("SELECT SUM(amount) FROM expense WHERE type = 'income'")
-    total_income = cursor.fetchone()[0]
-
-    if total_income is None:
-        total_income = 0
-
-    cursor.execute("SELECT SUM(amount) FROM expense WHERE type = 'expense'")
-    total_expense = cursor.fetchone()[0]
-
-    if total_expense is None:
-        total_expense = 0
-
-    balance = total_income - total_expense
-
-    conn.close()
-
-    return f"Total Income: {total_income}<br>Total Expense: {total_expense}<br>Balance: {balance}"
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
