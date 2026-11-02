@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 import sqlite3
 from datetime import datetime
 from stats_service import calculate_financial_stats
@@ -118,9 +118,19 @@ def filter_records():
 
 
 @app.route('/stats')
-def test_stats():
-    stats = calculate_financial_stats()
-    return f"Total Income: {stats['total_income']}<br>Total Expense: {stats['total_expense']}<br>Balance: {stats['balance']}"
+def stats_api():
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+
+    try:
+        stats = calculate_financial_stats(start_date=start_date, end_date=end_date)
+        return jsonify(stats)
+
+    except Exception as e:
+        return jsonify({
+            "error": "Failed to fetch statistics",
+            "details": str(e)
+        }), 500
 
 
 if __name__ == '__main__':
