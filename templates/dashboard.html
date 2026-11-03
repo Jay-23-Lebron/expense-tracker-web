@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../static/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
     <nav>
@@ -69,6 +69,13 @@
         </div>
     </section>
 
+    <section class="chart-section">
+        <h2>Income vs Expense Overview</h2>
+        <div class="chart-container">
+            <canvas id="incomeExpensePie"></canvas>
+        </div>
+    </section>
+
     <script>
         const canvas = document.getElementById('categoryPieChart');
         const ctx = canvas.getContext('2d');
@@ -122,5 +129,46 @@
             }
         );
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/stats')
+                .then(response => {
+                    return response.json();
+                })
+                .then(statsData => {
+                    document.getElementById('totalIncome').textContent = `$${statsData.total_income}`;
+                    document.getElementById('totalExpense').textContent = `$${statsData.total_expense}`;
+                    document.getElementById('balance').textContent = `$${statsData.balance}`;
+
+                    const pieCanvas = document.getElementById('incomeExpensePie');
+                    const chartContext = pieCanvas.getContext('2d');
+
+                    const pieChartConfig = {
+                        type: 'pie',
+                        data: {
+                            labels: ['Total Income', 'Total Expense'],
+                            datasets: [{
+                                data: [statsData.total_income, statsData.total_expense],
+                                backgroundColor: ['#27ae60', '#e74c3c'],
+                                borderColor: '#ffffff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                }
+                            }
+                        }
+                    };
+
+                    new Chart(chartContext, pieChartConfig);
+                });
+        });
+    </script>
+
 </body>
 </html>
