@@ -80,8 +80,6 @@
         const canvas = document.getElementById('categoryPieChart');
         const ctx = canvas.getContext('2d');
 
-        const categoryLabels = ['Food', 'Transport', 'Entertainment', 'Housing'];
-        const categoryAmounts = [2000, 300, 500, 2000];
         const categoryColors = [
             '#FF6384',
             '#36A2EB',
@@ -89,45 +87,50 @@
             '#4BC0C0'
         ];
 
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: categoryLabels,
-                datasets: [{
-                    data: categoryAmounts,
-                    backgroundColor: categoryColors,
-                    borderWidth: 1,
-                    borderColor: '#ffffff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                layout: {
-                    padding: 20
-                },
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            padding: 20,
-                            font: {
-                                size: 14
-                            }
-                        }
-                    },
+        fetch('/api/expense-by-category')
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.category);
+                const amounts = data.map(item => item.total);
 
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ':$' + context.raw;
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: amounts,
+                            backgroundColor: categoryColors,
+                            borderWidth: 1,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        layout: {
+                            padding: 20
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    padding: 20,
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.label + ': $' + context.raw;
+                                    }
+                                }
                             }
                         }
                     }
-                }
-                }
-            }
-        );
+                });
+            });
     </script>
 
     <script>

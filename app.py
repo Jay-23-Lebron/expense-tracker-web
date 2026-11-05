@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
 import sqlite3
 from datetime import datetime
-from stats_service import calculate_financial_stats
+from stats_service import calculate_financial_stats, get_expense_by_category
 app = Flask(__name__)
 
 @app.route('/')
@@ -117,7 +117,7 @@ def filter_records():
                            end_date=end_date)
 
 
-@app.route('/stats')
+@app.route('/api/stats')
 def stats_api():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
@@ -132,6 +132,10 @@ def stats_api():
             "details": str(e)
         }), 500
 
+@app.route('/api/expense-by-category')
+def expense_by_category():
+    category_stats = get_expense_by_category()
+    return jsonify(category_stats)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
