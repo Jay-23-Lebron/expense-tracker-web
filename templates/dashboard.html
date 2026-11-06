@@ -144,8 +144,8 @@
                     document.getElementById('totalExpense').textContent = `$${statsData.total_expense}`;
                     document.getElementById('balance').textContent = `$${statsData.balance}`;
 
-                    const pieCanvas = document.getElementById('incomeExpensePie');
-                    const chartContext = pieCanvas.getContext('2d');
+                    const categoryCanvas = document.getElementById('incomeExpensePie');
+                    const categoryCtx = categoryCanvas.getContext('2d');
 
                     const pieChartConfig = {
                         type: 'pie',
