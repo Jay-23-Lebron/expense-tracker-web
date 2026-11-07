@@ -78,4 +78,43 @@ def get_expense_by_category():
         conn.close()
 
     return category_stats
-        
+
+
+def get_all_records():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT id, type, amount, category, note, created_at FROM expense')
+    records = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return records
+
+
+def add_record(record_type, amount, category, record_date, note):
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        insert_sql = """
+            INSERT INTO expense (type, amount, category, date, note)
+            VALUES (?, ?, ?, ?, ?)
+        """
+        cursor.execute(insert_sql, (record_type, amount, category, record_date, note))
+        conn.commit()
+        return True
+
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        raise e
+    
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()

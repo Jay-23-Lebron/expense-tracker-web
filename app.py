@@ -1,21 +1,14 @@
 from flask import Flask, render_template, request, redirect, jsonify
 import sqlite3
 from datetime import datetime
+import stats_service
 from stats_service import calculate_financial_stats, get_expense_by_category
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    conn = sqlite3.connect('expense.db')
-    cursor = conn.cursor()
-
-    cursor.execute('SELECT id, type, amount, category, note, created_at FROM expense')
-    records = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-
-    return render_template('dashboard.html', records = records)
+    records = stats_service.get_all_records()
+    return render_template('dashboard.html', records=records)
 
 @app.route('/add-record')
 def add_record_page():
@@ -41,24 +34,10 @@ def add_record_submit():
         return 'Error: Amount must be greater than 0'
 
     try:
-        conn = sqlite3.connect('expense.db')
-        cursor = conn.cursor()
-
-        insert_sql = """
-            INSERT INTO expense (type, amount, category, date, note)
-            VALUES (?, ?, ?, ?, ?)
-        """
-        cursor.execute(insert_sql, (record_type, amount_num, category, record_date, note))
-        conn.commit()
+       stats_service.add_record(record_type, amount_num, category, record_date, note)
 
     except Exception as e:
-        conn.rollback()
         return f'Error: Failed to save record. {str(e)}'
-
-    finally:
-        if conn:
-            cursor.close()
-            conn.close()
 
     return redirect('/')
 
