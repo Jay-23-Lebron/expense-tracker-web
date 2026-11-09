@@ -118,3 +118,35 @@ def add_record(record_type, amount, category, record_date, note):
             cursor.close()
         if conn:
             conn.close()
+
+
+def filter_records(category, start_date, end_date):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    sql = "SELECT id, type, amount, category, note, date FROM expense WHERE 1=1 "
+    params = []
+
+    if category and category.strip():
+        sql += " AND category = ?"
+        params.append(category)
+
+    if start_date and not end_date:
+        sql += " AND date >= ?"
+        params.append(start_date)
+
+    if end_date and not start_date:
+        sql += " AND date <= ?"
+        params.append(end_date)
+
+    if start_date and end_date:
+        sql += " AND date BETWEEN ? AND ?"
+        params.append(start_date)
+        params.append(end_date)
+
+    cursor.execute(sql, params)
+    records = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return records
