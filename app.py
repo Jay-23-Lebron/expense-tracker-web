@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, session
 import sqlite3
 from datetime import datetime
 import stats_service
@@ -14,7 +14,7 @@ def index():
 def add_record_page():
     return render_template('expense-form.html')
 
-@app.route('/add-record', methods=['POST'])
+@app.route('/add-record', methods=['GET', 'POST'])
 def add_record_submit():
     record_type = request.form.get('type')
     amount = request.form.get('amount')
