@@ -4,6 +4,21 @@ from datetime import datetime
 import stats_service
 from stats_service import calculate_financial_stats, get_expense_by_category
 app = Flask(__name__)
+app.secret_key = "your_test_secret_key_123456"
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if username == "admin" and password == "123456":
+        session['username'] = username
+        return redirect('/')
+    else:
+        return render_template('login.html', error="Invalid username or password")
 
 @app.route('/')
 def index():
