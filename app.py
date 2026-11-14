@@ -27,11 +27,17 @@ def logout():
 
 @app.route('/')
 def index():
+    if 'username' not in session:
+        return redirect('/login')
+
     records = stats_service.get_all_records()
     return render_template('dashboard.html', records=records)
 
 @app.route('/add-record')
 def add_record_page():
+    if 'username' not in session:
+        return redirect('/login')
+
     return render_template('expense-form.html')
 
 @app.route('/add-record', methods=['GET', 'POST'])
