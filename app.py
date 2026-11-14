@@ -20,6 +20,11 @@ def login():
     else:
         return render_template('login.html', error="Invalid username or password")
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('/login')
+
 @app.route('/')
 def index():
     records = stats_service.get_all_records()
