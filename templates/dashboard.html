@@ -14,7 +14,10 @@
     </nav>
 
     {% if session.username %}
-    <p>Welcome, {{ session.username }}! <a href="/logout">Logout</a></p>
+    <p>Welcome, {{ session.username }}!
+        <a href="/export">Export CSV</a>  | 
+        <a href="/logout">Logout</a>
+    </p>
     {% else %}
     <p>You are not logged in. <a href="/login">Go to login</a></p>
     {% endif %}

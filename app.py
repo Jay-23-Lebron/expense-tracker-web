@@ -3,8 +3,16 @@ import sqlite3
 from datetime import datetime
 import stats_service
 from stats_service import calculate_financial_stats, get_expense_by_category
+import csv
+import io
+from flask import Response
 app = Flask(__name__)
 app.secret_key = "your_test_secret_key_123456"
+
+def get_db_connection():
+    conn = sqlite3.connect('expense.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -113,6 +121,38 @@ def stats_api():
 def expense_by_category():
     category_stats = get_expense_by_category()
     return jsonify(category_stats)
+
+@app.route('/export')
+def export_records():
+    if 'username' not in session:
+        return redirect('/login')
+
+    conn = get_db_connection()
+    records = conn.execute('SELECT * FROM expense ORDER BY date DESC').fetchall()
+    conn.close()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow(['ID', 'Type', 'Amount', 'Category', 'Date', 'Note'])
+
+    for record in records:
+        writer.writerow([
+            record['id'],
+            record['type'],
+            record['amount'],
+            record['category'],
+            record['date'],
+            record['note']
+        ])
+
+    csv_content = output.getvalue()
+    output.close()
+
+    response = Response(csv_content, mimetype='text/csv')
+    response.headers['Content-Disposition'] = 'attachment; filename="expense_records.csv"'
+
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
