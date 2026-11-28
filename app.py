@@ -1,18 +1,12 @@
-from flask import Flask, render_template, request, redirect, jsonify, session
-import sqlite3
+from flask import Flask, render_template, request, redirect, jsonify, session, Response
 from datetime import datetime
 import stats_service
-from stats_service import calculate_financial_stats, get_expense_by_category
 import csv
 import io
-from flask import Response
+
 app = Flask(__name__)
 app.secret_key = "your_test_secret_key_123456"
 
-def get_db_connection():
-    conn = sqlite3.connect('expense.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -22,7 +16,7 @@ def login():
     username = request.form.get('username')
     password = request.form.get('password')
 
-    if username == "admin" and password == "123456":
+    if stats_service.verify_login(username, password):
         session['username'] = username
         return redirect('/')
     else:
@@ -56,19 +50,10 @@ def add_record_submit():
     record_date = request.form.get('date')
     note = request.form.get('note')
 
-    if not amount or amount.strip() == '':
-        return 'Error: Amount cannot be empty'
-
     try:
-        amount_num = float(amount)
-    except ValueError:
-        return 'Error: Amount must be a valid number'
-
-    if amount_num <= 0:
-        return 'Error: Amount must be greater than 0'
-
-    try:
-       stats_service.add_record(record_type, amount_num, category, record_date, note)
+        stats_service.add_record_with_validate(record_type, amount, category, record_date, note)
+    except ValueError as e:
+        return f'Error: {str(e)}'
 
     except Exception as e:
         return f'Error: Failed to save record. {str(e)}'
@@ -81,19 +66,7 @@ def filter_records():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
 
-    if start_date:
-        try:
-            datetime.strptime(start_date, "%Y-%m-%d")
-        except ValueError:
-            start_date = ""
-
-    if end_date:
-        try:
-            datetime.strptime(end_date, "%Y-%m-%d")
-        except ValueError:
-            end_date = ""
-
-    records = stats_service.filter_records(category, start_date, end_date)
+    records = stats_service.get_filtered_records(category, start_date, end_date)
 
     return render_template('filter.html', 
                            records=records,
@@ -108,7 +81,7 @@ def stats_api():
     end_date = request.args.get('end_date')
 
     try:
-        stats = calculate_financial_stats(start_date=start_date, end_date=end_date)
+        stats = stats_service.calculate_financial_stats(start_date=start_date, end_date=end_date)
         return jsonify(stats)
 
     except Exception as e:
@@ -119,7 +92,7 @@ def stats_api():
 
 @app.route('/api/expense-by-category')
 def expense_by_category():
-    category_stats = get_expense_by_category()
+    category_stats = stats_service.get_expense_by_category()
     return jsonify(category_stats)
 
 @app.route('/export')
@@ -127,9 +100,7 @@ def export_records():
     if 'username' not in session:
         return redirect('/login')
 
-    conn = get_db_connection()
-    records = conn.execute('SELECT * FROM expense ORDER BY date DESC').fetchall()
-    conn.close()
+    records = stats_service.get_all_records()
 
     output = io.StringIO()
     writer = csv.writer(output)
